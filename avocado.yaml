@@ -1,0 +1,75 @@
+cli_requirement: ">=0.26.0"
+
+default_target: grinn-astra-1680-sbc
+supported_targets:
+  - grinn-astra-1680-sbc
+
+distro:
+  release: 2024
+  channel: edge
+  repo:
+    url: http://localhost:8080
+
+runtimes:
+  dev:
+    extensions:
+      - avocado-ext-dev
+      - avocado-ext-sshd-dev
+      - avocado-bsp-{{ avocado.target }}
+      - config
+      - app
+    packages:
+      avocado-runtime: "*"
+
+extensions:
+  avocado-ext-dev:
+    source:
+      type: package
+      version: "*"
+
+  avocado-ext-sshd-dev:
+    source:
+      type: package
+      version: "*"
+
+  avocado-bsp-{{ avocado.target }}:
+    source:
+      type: package
+      version: "*"
+
+  app:
+    types:
+      - sysext
+      - confext
+    version: "0.1.0"
+
+    # Install additional application dependencies
+    #packages:
+      #curl: "*"
+      #iperf3: "*"
+
+  # Generated default config extension
+  # Use or modify this to configure "real" user accounts (passwd, shadow, group)
+  # or configure other system services
+  config:
+    types:
+      - confext
+    version: "0.1.0"
+
+    # NOT FOR PRODUCTION: Set root password to empty string
+    users:
+      root:
+        password: ""
+
+
+sdk:
+  image: docker.io/avocadolinux/sdk:{{ avocado.distro.release }}-{{ avocado.distro.channel }}
+
+  container_args:
+    - --privileged
+    - --network=host
+    - -v /dev:/dev
+    - -v /sys:/sys
+
+  packages:
+    avocado-sdk-toolchain: "*"
