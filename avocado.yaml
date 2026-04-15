@@ -17,6 +17,8 @@ runtimes:
       - avocado-ext-sshd-dev
       - avocado-bsp-{{ avocado.target }}
       - config
+      - fwup
+      - weston
       - app
       - avocado-ext-connect-config
       - avocado-ext-connect
@@ -39,6 +41,17 @@ extensions:
     source:
       type: package
       version: "*"
+
+  weston:
+    packages:
+      weston: "*"
+      kernel-module-syna-drm: "*"
+    version: "1.0.0"
+
+  fwup:
+    packages:
+      fwup: "*"
+    version: "1.0.0"
 
   app:
     types:
@@ -74,7 +87,6 @@ extensions:
     source:
       type: package
       version: "*"
-
 
   avocado-ext-tunnels:
     source:
