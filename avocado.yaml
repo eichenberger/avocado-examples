@@ -18,6 +18,9 @@ runtimes:
       - avocado-bsp-{{ avocado.target }}
       - config
       - app
+      - avocado-ext-connect-config
+      - avocado-ext-connect
+      - avocado-ext-tunnels
     packages:
       avocado-runtime: "*"
 
@@ -61,6 +64,22 @@ extensions:
       root:
         password: ""
 
+  avocado-ext-connect-config:
+    types:
+      - confext
+    version: "0.1.0"
+    overlay: overlay
+
+  avocado-ext-connect:
+    source:
+      type: package
+      version: "*"
+
+
+  avocado-ext-tunnels:
+    source:
+      type: package
+      version: "*"
 
 sdk:
   image: docker.io/avocadolinux/sdk:{{ avocado.distro.release }}-{{ avocado.distro.channel }}
