@@ -27,8 +27,25 @@ if [ -f "${AVOCADO_BUILD_DIR}/qt-deepx-example/service/qt-deepx-example.service"
     install -m 0644 "${AVOCADO_BUILD_DIR}/qt-deepx-example/service/qt-deepx-example.service" "$SERVICE_DIR/"
 elif [ -f "qt-deepx-example/service/qt-deepx-example.service" ]; then
     install -m 0644 "qt-deepx-example/service/qt-deepx-example.service" "$SERVICE_DIR/"
+elif [ -f "files/qt-deepx-example.service" ]; then
+    install -m 0644 "files/qt-deepx-example.service" "$SERVICE_DIR/"
 else
     echo "WARNING: qt-deepx-example.service not found; skipping service installation"
+fi
+
+# Install weston kiosk configuration (kiosk mode for dev-deepx runtime)
+WESTON_KIOSK_DIR="${AVOCADO_BUILD_EXT_SYSROOT}/usr/lib/weston-kiosk"
+WESTON_DROP_IN_DIR="${AVOCADO_BUILD_EXT_SYSROOT}/usr/lib/systemd/system/weston.service.d"
+mkdir -p "$WESTON_KIOSK_DIR" "$WESTON_DROP_IN_DIR"
+
+if [ -f "files/weston-kiosk.ini" ]; then
+    install -m 0644 "files/weston-kiosk.ini" "$WESTON_KIOSK_DIR/weston.ini"
+    echo "  Weston kiosk config: ${WESTON_KIOSK_DIR}/weston.ini"
+fi
+
+if [ -f "files/weston-kiosk.conf" ]; then
+    install -m 0644 "files/weston-kiosk.conf" "$WESTON_DROP_IN_DIR/kiosk.conf"
+    echo "  Weston drop-in:      ${WESTON_DROP_IN_DIR}/kiosk.conf"
 fi
 
 echo "qt-deepx-example installed successfully!"

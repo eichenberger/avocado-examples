@@ -18,12 +18,23 @@ runtimes:
       - avocado-bsp-{{ avocado.target }}
       - config
       - weston
+    packages:
+      avocado-runtime: "*"
+
+  dev-deepx:
+    extensions:
+      - avocado-ext-dev
+      - avocado-ext-sshd-dev
+      - avocado-bsp-{{ avocado.target }}
+      - config
+      - weston
       - deepx-driver
       - deepx-rt
       - deepx-models
       - deepx-qt-example
     packages:
       avocado-runtime: "*"
+
 
 extensions:
   avocado-ext-dev:
@@ -169,10 +180,13 @@ extensions:
       - qt-deepx-example.service
 
     on_merge:
+      - systemctl daemon-reload
+      - systemctl restart weston
       - systemctl start --no-block qt-deepx-example.service
 
     on_unmerge:
       - systemctl stop qt-deepx-example.service
+      - systemctl restart weston
 
     packages:
       dx-qt-example:
@@ -223,6 +237,10 @@ extensions:
       packages:
         nativesdk-curl: '*'
         packagegroup-cross-canadian-avocado-{{ avocado.target }}: '*'
+  htop:
+    packages:
+      htop: "*"
+    version: "3.3.0"
 
 sdk:
   image: docker.io/avocadolinux/sdk:{{ avocado.distro.release }}-{{ avocado.distro.channel }}
